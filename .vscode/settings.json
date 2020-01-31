@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/31d7565e-2672-41b0-9512-3d9e584b98a7/resourceGroups/spectrum-game/providers/Microsoft.Web/sites/spectrumgame-webapp",
+    "appService.deploySubpath": "src\\spectrumgame\\build"
+}
