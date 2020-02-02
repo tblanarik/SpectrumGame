@@ -10,6 +10,7 @@ using Microsoft.Azure.Cosmos.Table;
 using System.Linq;
 using Newtonsoft.Json;
 using Microsoft.Azure.Cosmos.Table.Queryable;
+using System.Security.Claims;
 
 namespace Spectrum
 {
@@ -51,6 +52,23 @@ namespace Spectrum
         {
             var res = GetRandomCategory();
             return new OkObjectResult(res);
+        }
+
+        [FunctionName("AuthTest")]
+        public static IActionResult AuthTest(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+        ILogger log)
+        {
+            var name = "NoName";
+            try
+            { 
+                name = ClaimsPrincipal.Current.Identity.Name;
+            }
+            catch(Exception ex)
+            {
+                name = ex.Message;
+            }
+            return new OkObjectResult(name);
         }
 
         public static ClueEntity GetRandomCategory()
