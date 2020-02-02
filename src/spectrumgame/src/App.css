@@ -40,3 +40,7 @@
 .current-value {
   display: none;
 }
+
+.categories {
+    padding: 5px;
+}
