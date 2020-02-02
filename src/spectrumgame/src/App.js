@@ -5,10 +5,8 @@ import Guess from './Guesser';
 function App() {
   return (
   <div className="App">
-
-   <Guess/>
+    {Guess()}
    </div>
    );
 }
-
 export default App;
