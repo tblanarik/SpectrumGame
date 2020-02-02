@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 
-function GiveClue()
+function GiveClue(left, right)
 {
   const useStyles = makeStyles(theme => ({
     root: {
@@ -29,10 +29,10 @@ function GiveClue()
           <Grid justify="center" direction="row" alignItems="center" container spacing={3}>
             <br/>
             <Grid item sm={3} xs={4}>
-              <Paper elevation={2} className="categories">Total Rip-off</Paper>
+              <Paper elevation={2} className="categories">{left}</Paper>
             </Grid>
             <Grid item sm={3} xs={4}>
-              <Paper elevation={2} className="categories">Completely Original</Paper>
+  <Paper elevation={2} className="categories">{right}</Paper>
             </Grid>
             <Grid item sm={8} xs={6} >
               < form className={classes.root} noValidate autoComplete="off">
