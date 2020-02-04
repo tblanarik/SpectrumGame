@@ -62,7 +62,7 @@ class Backend extends Component {
   getCategories() {
     //fetch('http://localhost:7071/api/GetRandomCategory', {headers :{"Authorization": "Bearer " + this.state.auth.Zi.access_token}})
     fetch('https://spectrumgame-backend.azurewebsites.net/api/AuthTest', {headers :{"Authorization": "Bearer " + this.state.auth.tokenId}})
-      .then(response => response)//.json())
+      .then(response => response.json())
       .then(data => this.setState({ data }));
   }
 }

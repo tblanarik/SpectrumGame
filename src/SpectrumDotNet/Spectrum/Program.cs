@@ -57,16 +57,18 @@ namespace Spectrum
         [FunctionName("AuthTest")]
         public static IActionResult AuthTest(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+        ClaimsPrincipal principal,
         ILogger log)
         {
-            var name = "NoName";
+            var name = "TEST: ";
             try
-            { 
-                name = ClaimsPrincipal.Current.Identity.Name;
+            {
+                var user = req.HttpContext.User.Identity.Name;
+                name = $"{name} | SUCCESS | {principal.Identity.IsAuthenticated} | {user}";
             }
             catch(Exception ex)
             {
-                name = ex.Message;
+                name = $"{name} | Exception | {ex.Message}";
             }
             return new OkObjectResult(name);
         }
