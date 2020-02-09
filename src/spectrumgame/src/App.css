@@ -44,3 +44,7 @@
 .categories {
     padding: 5px;
 }
+
+.MuiTableCell-head {
+  font-weight: bold !important;
+}

@@ -26,21 +26,30 @@ function Guess()
   const classes = useStyles();
   return (
       <div className="App">
-        <div>
-          <ReactSpeedometer 
-          value={value} needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15"/>
-          <Grid justify="center" container spacing={3}>
-          <Grid item xs={6} sm={5}>
-              <Paper className={classes.paper}>  <Slider value={value} onChange={handleChange} /></Paper>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Grid justify="center" container spacing={3}>
+                <Grid item xs={12}>
+                  <ReactSpeedometer value={value} needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15"/>
+                </Grid>
+                <Grid item xs={6} sm={5}>
+                    <Paper className={classes.paper}>  <Slider value={value} onChange={handleChange} /></Paper>
+                </Grid>
+                <Grid item xs={8}>
+                  <Button variant="contained" color="primary">
+                  Submit
+                  </Button>
+                </Grid>
+              </Grid> <br/>
+            </Grid>
+            <Grid item xs={6}>
+              <Grid justify="center" container spacing={3}>
+                <Grid item xs={6} l={6}>
+                  <Scoreboard />
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-          </Grid> <br/>
-          <Button variant="contained" color="primary">
-          Submit
-          </Button>
-      </div>
-      <div>
-        <Scoreboard />
-      </div>
     </div>
   );
 }
