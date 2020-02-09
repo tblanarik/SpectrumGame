@@ -27,7 +27,7 @@ function Guess()
   return (
       <div className="App">
           <Grid container spacing={3}>
-            <Grid item xs={6}>
+            <Grid item xs={12} s={12} m={6}>
               <Grid justify="center" container spacing={3}>
                 <Grid item xs={12}>
                   <ReactSpeedometer value={value} needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15"/>
@@ -40,11 +40,11 @@ function Guess()
                   Submit
                   </Button>
                 </Grid>
-              </Grid> <br/>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <Grid justify="center" container spacing={3}>
-                <Grid item xs={6} l={6}>
+            <Grid item xs={12} s={12} m={6}>
+              <Grid justify="center" container spacing={1}>
+                <Grid item xs={10} s={6}>
                   <Scoreboard />
                 </Grid>
               </Grid>
