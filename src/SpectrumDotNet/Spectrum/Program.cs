@@ -11,6 +11,10 @@ using System.Linq;
 using Newtonsoft.Json;
 using Microsoft.Azure.Cosmos.Table.Queryable;
 using System.Security.Claims;
+using System.Net.Http;
+using System.Threading;
+using System.Net;
+using System.Collections.Generic;
 
 namespace Spectrum
 {
@@ -55,22 +59,15 @@ namespace Spectrum
         }
 
         [FunctionName("AuthTest")]
-        public static IActionResult AuthTest(
+        public static async Task<IActionResult> AuthTest(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
         ClaimsPrincipal principal,
         ILogger log)
         {
-            var name = "TEST: ";
-            try
-            {
-                var user = req.HttpContext.User.Identity.Name;
-                name = $"{name} | SUCCESS | {principal.Identity.IsAuthenticated} | {user}";
-            }
-            catch(Exception ex)
-            {
-                name = $"{name} | Exception | {ex.Message}";
-            }
-            return new OkObjectResult(name);
+            var user = await GetAuthUser(req, principal);
+            var allowed = Authorize(user);
+            var msg = allowed ? $"Authorized: {user}" : $"Not authorized: {user}";
+            return new OkObjectResult(new { message = msg});
         }
 
         public static ClueEntity GetRandomCategory()
@@ -169,6 +166,22 @@ namespace Spectrum
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static async Task<string> GetAuthUser(HttpRequest req, ClaimsPrincipal principal)
+        {
+            if (!principal.Identity.IsAuthenticated)
+            {
+                throw new Exception("User not authenticated");
+            }
+            var authInfo = await req.GetAuthInfoAsync();
+            return authInfo.UserId;
+        }
+
+        public static bool Authorize(string user)
+        {
+            var validUsers = new List<string>(){ "tblanarik@gmail.com" };
+            return validUsers.Contains(user);
         }
     }
 }
