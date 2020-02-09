@@ -34,7 +34,7 @@ function GiveClue() {
     <div className="App">
       <div>
         <ReactSpeedometer
-          value={target} segments={1000} needleColor="red" startColor="green" endColor="blue" minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15" />
+          value={target} segments={1000} needleColor="red" startColor="green" endColor="blue" minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} />
         <Grid justify="center" direction="row" alignItems="center" container spacing={3}>
           <Grid item sm={3} xs={4}>
             <Paper elevation={2} className="categories">{leftCat}</Paper>
@@ -47,7 +47,7 @@ function GiveClue() {
               <TextField fullWidth id="standard-basic" label="Enter your clue" />
             </form>
           </Grid>
-          <Grid justify="center" item sm={8} xs={8} >
+          <Grid item sm={8} xs={8} >
             <Button variant="contained" color="primary">
               Submit
           </Button>
@@ -55,8 +55,8 @@ function GiveClue() {
         </Grid>
       </div>
       <div>
-        <Grid justify="center" align items="center" container spacing={1}>
-          <Grid item xs={6} sm={5} md={3}> 
+        <Grid justify="center" alignItems="center" container spacing={1}>
+          <Grid item xs={7} sm={5} md={3}> 
             <Scoreboard />
           </Grid>
         </Grid>

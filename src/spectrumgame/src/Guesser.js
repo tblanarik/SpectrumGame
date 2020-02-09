@@ -30,7 +30,7 @@ function Guess() {
           <Grid item xs={12} s={6} m={6}>
             <Grid justify="center" container spacing={1}>
               <Grid item xs={12}>
-                <ReactSpeedometer value={value} segments={1000} needleColor="red" startColor="green" endColor="blue" needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15" />
+                <ReactSpeedometer value={value} segments={1000} needleColor="red" startColor="green" endColor="blue" needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} />
               </Grid>
               <Grid item xs={6} sm={4}>
                 <Paper className={classes.paper}>  <Slider value={value} onChange={handleChange} /></Paper>
@@ -45,7 +45,7 @@ function Guess() {
         </Grid>
       </div>
       <div>
-        <Grid justify="center" align items="center" container spacing={1}>
+        <Grid justify="center" alignItems="center" container spacing={1}>
           <Grid item xs={6} sm={5} md={3}>
             <Scoreboard />
           </Grid>

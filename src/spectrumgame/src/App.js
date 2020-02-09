@@ -7,11 +7,11 @@ import HomePage from './Game';
 
 function App() {
   return (
-    <switch>
+    <Switch>
       <Route exact path="/" component={HomePage} />
       <Route path="/guess" component={Guess} />
       <Route path="/give" component={GiveClue} />
-    </switch>
+    </Switch>
   //<div className="App">
     //{Guess()}
     //{GiveClue("Total Rip-off", "Completely Original")}

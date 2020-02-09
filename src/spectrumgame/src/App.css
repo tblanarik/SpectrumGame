@@ -48,3 +48,7 @@
 .MuiTableCell-head {
   font-weight: bold !important;
 }
+
+.speedometer {
+  height: 150px !important;
+}
