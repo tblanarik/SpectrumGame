@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Scoreboard from './Scoreboard'
+import ButtonAppBar from './Header'
 
 function Guess() {
   const [value, setValue] = React.useState(50);
@@ -24,8 +25,9 @@ function Guess() {
   }));
   const classes = useStyles();
   return (
-    <div className="App">
-      <div>
+    <div>
+      <ButtonAppBar/>
+      <div  className="App">
         <Grid container spacing={1}>
           <Grid item xs={12} s={6} m={6}>
             <Grid justify="center" container spacing={1}>
@@ -46,7 +48,7 @@ function Guess() {
       </div>
       <div>
         <Grid justify="center" alignItems="center" container spacing={1}>
-          <Grid item xs={6} sm={5} md={3}>
+          <Grid item xs={7} sm={5} md={3}>
             <Scoreboard />
           </Grid>
         </Grid>

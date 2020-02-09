@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import GenerateCategories from './Categories';
 import GenerateTarget from './Target';
 import Scoreboard from './Scoreboard';
+import ButtonAppBar from './Header';
 
 function GiveClue() {
   const useStyles = makeStyles(theme => ({
@@ -31,8 +32,9 @@ function GiveClue() {
 
   const classes = useStyles();
   return (
-    <div className="App">
-      <div>
+    <div>
+      <ButtonAppBar />
+      <div className="App">
         <ReactSpeedometer
           value={target} segments={1000} needleColor="red" startColor="green" endColor="blue" minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} />
         <Grid justify="center" direction="row" alignItems="center" container spacing={3}>
