@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import GenerateCategories from './Categories';
+import GetCategories from './Categories';
 import GenerateTarget from './Target';
 import Scoreboard from './Scoreboard';
 import ButtonAppBar from './Header';
@@ -24,7 +24,7 @@ function GiveClue() {
   )
   );
 
-  var categories = GenerateCategories();
+  var categories = GetCategories();
   var leftCat = categories[0];
   var rightCat = categories[1];
 
@@ -56,9 +56,10 @@ function GiveClue() {
           </Grid>
         </Grid>
       </div>
+      <br/>
       <div>
         <Grid justify="center" alignItems="center" container spacing={1}>
-          <Grid item xs={7} sm={5} md={3}> 
+          <Grid item xs={8} sm={6} md={3}> 
             <Scoreboard />
           </Grid>
         </Grid>
