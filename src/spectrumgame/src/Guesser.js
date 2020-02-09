@@ -7,8 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Scoreboard from './Scoreboard'
 
-function Guess()
-{
+function Guess() {
   const [value, setValue] = React.useState(50);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -25,31 +24,33 @@ function Guess()
   }));
   const classes = useStyles();
   return (
-      <div className="App">
-          <Grid container spacing={3}>
-            <Grid item xs={12} s={12} m={6}>
-              <Grid justify="center" container spacing={3}>
-                <Grid item xs={12}>
-                  <ReactSpeedometer value={value} needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15"/>
-                </Grid>
-                <Grid item xs={6} sm={5}>
-                    <Paper className={classes.paper}>  <Slider value={value} onChange={handleChange} /></Paper>
-                </Grid>
-                <Grid item xs={8}>
-                  <Button variant="contained" color="primary">
+    <div className="App">
+      <div>
+        <Grid container spacing={1}>
+          <Grid item xs={12} s={6} m={6}>
+            <Grid justify="center" container spacing={1}>
+              <Grid item xs={12}>
+                <ReactSpeedometer value={value} segments={1000} needleColor="red" startColor="green" endColor="blue" needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15" />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <Paper className={classes.paper}>  <Slider value={value} onChange={handleChange} /></Paper>
+              </Grid>
+              <Grid item xs={10}>
+                <Button variant="contained" color="primary">
                   Submit
                   </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} s={12} m={6}>
-              <Grid justify="center" container spacing={1}>
-                <Grid item xs={10} s={6}>
-                  <Scoreboard />
-                </Grid>
               </Grid>
             </Grid>
           </Grid>
+        </Grid>
+      </div>
+      <div>
+        <Grid justify="center" align items="center" container spacing={1}>
+          <Grid item xs={6} sm={5} md={3}>
+            <Scoreboard />
+          </Grid>
+        </Grid>
+      </div>
     </div>
   );
 }
