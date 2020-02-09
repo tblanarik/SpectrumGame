@@ -1,14 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ReactSpeedometer from "react-d3-speedometer"
+import Guess from './Guesser';
+import GiveClue from './clueGiver';
 
 function App() {
   return (
-    <div className="App">
-      <ReactSpeedometer/>
-    </div>
-  );
+  <div className="App">
+    {Guess()}
+    {GiveClue("Total Rip-off", "Completely Original")}
+  </div>
+   );
 }
-
 export default App;
