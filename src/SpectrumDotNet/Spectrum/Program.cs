@@ -11,9 +11,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Microsoft.Azure.Cosmos.Table.Queryable;
 using System.Security.Claims;
-using System.Net.Http;
-using System.Threading;
-using System.Net;
 using System.Collections.Generic;
 
 namespace Spectrum
@@ -24,9 +21,13 @@ namespace Spectrum
         
         [FunctionName("NewGame")]
         public static async Task<IActionResult> NewGame(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ClaimsPrincipal principal,
             ILogger log)
         {
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             string name = data?.name;
@@ -36,7 +37,7 @@ namespace Spectrum
             
             var category = GetRandomCategory();
 
-            GameEntity game = new GameEntity(RandomString(5), name)
+            GameEntity game = new GameEntity(RandUtil.RandomString(5), name)
             {
                 CategoryLeft = category.CategoryLeft,
                 CategoryRight = category.CategoryRight,
@@ -50,10 +51,14 @@ namespace Spectrum
         }
 
         [FunctionName("GetRandomCategory")]
-        public static IActionResult HttpGetRandomCategory(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+        public static async Task<IActionResult> HttpGetRandomCategory(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+        ClaimsPrincipal principal,
         ILogger log)
         {
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
+
             var res = GetRandomCategory();
             return new OkObjectResult(res);
         }
@@ -64,9 +69,11 @@ namespace Spectrum
         ClaimsPrincipal principal,
         ILogger log)
         {
-            var user = await GetAuthUser(req, principal);
-            var allowed = Authorize(user);
-            var msg = allowed ? $"Authorized: {user}" : $"Not authorized: {user}";
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
+
+            var user = auth.Username;
+            var msg = $"Authorized: {user}";
             return new OkObjectResult(new { message = msg});
         }
 
@@ -88,9 +95,13 @@ namespace Spectrum
 
         [FunctionName("AddCategory")]
         public static async Task<IActionResult> AddCategory(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-    ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+        ClaimsPrincipal principal,
+        ILogger log)
         {
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             var left = data?.left;
@@ -99,7 +110,7 @@ namespace Spectrum
             var client = account.CreateCloudTableClient();
             var table = client.GetTableReference("clues");
 
-            ClueEntity clue = new ClueEntity(RandomString(10))
+            ClueEntity clue = new ClueEntity(RandUtil.RandomString(10))
             {
                 CategoryLeft = left,
                 CategoryRight = right
@@ -113,9 +124,13 @@ namespace Spectrum
 
         [FunctionName("SetGuess")]
         public static async Task<IActionResult> SetGuess(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+        ClaimsPrincipal principal,
         ILogger log)
         {
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
 
@@ -140,11 +155,14 @@ namespace Spectrum
 
         [FunctionName("GetGuesses")]
         public static async Task<IActionResult> GetGuesses(
-                [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+                [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+                ClaimsPrincipal principal,
                 ILogger log)
         {
-            string gameId = req.Query["gameId"];
+            var auth = await AuthUtil.IsAuthorized(req, principal);
+            if (!auth.IsAuthenticated) return new ForbidResult();
 
+            string gameId = req.Query["gameId"];
             var account = CloudStorageAccount.Parse(connectionString);
             var client = account.CreateCloudTableClient();
             var table = client.GetTableReference("guesses");
@@ -158,30 +176,6 @@ namespace Spectrum
             var guessList = query.Execute().ToList();
 
             return new OkObjectResult(guessList);
-        }
-
-        public static string RandomString(int length)
-        {
-            var random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public static async Task<string> GetAuthUser(HttpRequest req, ClaimsPrincipal principal)
-        {
-            if (!principal.Identity.IsAuthenticated)
-            {
-                throw new Exception("User not authenticated");
-            }
-            var authInfo = await req.GetAuthInfoAsync();
-            return authInfo.UserId;
-        }
-
-        public static bool Authorize(string user)
-        {
-            var validUsers = new List<string>(){ "tblanarik@gmail.com" };
-            return validUsers.Contains(user);
         }
     }
 }
