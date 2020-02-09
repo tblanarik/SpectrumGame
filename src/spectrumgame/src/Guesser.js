@@ -5,6 +5,7 @@ import Slider from '@material-ui/core/Slider';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Scoreboard from './Scoreboard'
 
 function Guess()
 {
@@ -25,6 +26,7 @@ function Guess()
   const classes = useStyles();
   return (
       <div className="App">
+        <div>
           <ReactSpeedometer 
           value={value} needleTransitionDuration={50} minValue={0} maxValue={100} maxSegmentLabels={0} currentValueText={""} height="15"/>
           <Grid justify="center" container spacing={3}>
@@ -36,6 +38,10 @@ function Guess()
           Submit
           </Button>
       </div>
+      <div>
+        <Scoreboard />
+      </div>
+    </div>
   );
 }
 export default Guess;
